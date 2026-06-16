@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   EDITORIAL SWISS — design system
+   Elegant serif headlines (Cormorant) · clean sans reading (Jost) · bold
+   grotesque figures (Archivo) · per-chapter accent · rounded + offset-shadow
+   playfulness · light/dark themes (dark default).
+   Token NAMES are preserved from the previous system so the 12 chapters
+   re-skin automatically; only the VALUES + helper styling change.
+============================================================================ */
+
+@theme {
+  /* Surfaces — DARK defaults (legacy "ink" names kept for compatibility) */
+  --color-ink-950: #101015;  /* page background            */
+  --color-ink-900: #14141b;
+  --color-ink-850: #17171f;  /* panel / card               */
+  --color-ink-800: #1d1d27;  /* panel-2 / inset            */
+  --color-ink-750: #24242f;
+  --color-ink-700: #2d2d39;  /* hover / strong surface     */
+  --color-ink-600: #3a3a48;
+  --color-ink-500: #4d4d5e;
+  --color-ink-400: #6a6a7d;
+
+  --color-fg: #f1ece0;
+  --color-fg-muted: #a7a294;
+  --color-fg-faint: #6f6a5b;
+
+  --color-line: #f0ece41f;
+  --color-line-strong: #f0ece43d;
+
+  /* Semantic — vivid pops for data states */
+  --color-ok: #4fd79b;
+  --color-warn: #f1b64c;
+  --color-fault: #ff5b45;
+  --color-info: #7b86ff;
+  --color-special: #ff8fb0;
+
+  --radius-xs: 6px;
+  --radius-sm: 9px;
+  --radius-md: 13px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+}
+
+/* Fonts (from next/font) + live per-chapter accent. `inline` so utilities
+   resolve at runtime. */
+@theme inline {
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-archivo), ui-sans-serif, system-ui, sans-serif; /* the bold "data voice" */
+  --font-code: var(--font-plex), ui-monospace, "SFMono-Regular", monospace;
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+}
+
+:root {
+  --accent: #f5b13d;
+  --accent-2: #2ba6ec;
+  --shadow: #000000;
+  color-scheme: dark;
+}
+
+/* ---- LIGHT theme: override the color tokens (utilities pick up new values) */
+html.light {
+  --color-ink-950: #f5f0e6;  /* page background            */
+  --color-ink-900: #f0ebdf;
+  --color-ink-850: #fdfaf3;  /* panel / card (elevated)    */
+  --color-ink-800: #f4eee2;  /* panel-2                    */
+  --color-ink-750: #ece5d6;
+  --color-ink-700: #ddd5c3;  /* borders                    */
+  --color-ink-600: #c7bea8;
+  --color-ink-500: #a89e85;
+  --color-ink-400: #8a8270;
+
+  --color-fg: #1c1813;
+  --color-fg-muted: #615a4b;
+  --color-fg-faint: #948c78;
+
+  --color-line: #1c181321;
+  --color-line-strong: #1c18133d;
+
+  --color-ok: #2ba668;
+  --color-warn: #cf8a13;
+  --color-fault: #e23b27;
+  --color-info: #3f49d8;
+  --color-special: #e85d8a;
+
+  --shadow: #1c1813;
+  color-scheme: light;
+}
+
+@layer base {
+  * { border-color: var(--color-line); }
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    transition: background-color .5s ease, color .5s ease;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.015em; line-height: 1.04; color: var(--color-fg); }
+  ::selection { background: color-mix(in oklab, var(--accent) 36%, transparent); color: #fff; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+  * { scrollbar-width: thin; scrollbar-color: var(--color-ink-700) transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-thumb { background: var(--color-ink-700); border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
+}
+
+/* ----------------------------------------------------------- labels / type */
+.kicker, .label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-fg-faint);
+}
+.font-figure { font-family: var(--font-mono); } /* Archivo bold data voice */
+
+/* ----------------------------------------------------------------- surfaces */
+.panel {
+  background: var(--color-ink-850);
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: var(--radius-lg);
+}
+.glass {
+  background: color-mix(in oklab, var(--color-ink-850) 78%, transparent);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid var(--color-line);
+}
+/* The "figure / instrument" frame — bold border + sticker offset shadow */
+.instrument {
+  background: var(--color-ink-850);
+  border: 2px solid var(--color-line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: 6px 6px 0 var(--shadow);
+}
+.pop-shadow { box-shadow: 5px 5px 0 var(--shadow); transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease; }
+.pop-shadow:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--shadow); }
+
+/* ------------------------------------------------------------------ accents */
+.accent-text { color: var(--accent); }
+.accent-bg { background-color: var(--accent); }
+.accent-border { border-color: color-mix(in oklab, var(--accent) 55%, transparent); }
+.accent-ring { box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 55%, transparent); }
+.accent-soft-bg { background-color: color-mix(in oklab, var(--accent) 13%, transparent); }
+.accent-glow { box-shadow: 5px 5px 0 var(--shadow); }
+.text-glow { text-shadow: none; }
+.accent-gradient-text { color: var(--accent); }
+.accent-shadow { box-shadow: 6px 6px 0 var(--shadow); }
+
+/* hairline divider */
+.hairline { height: 2px; background: var(--color-line-strong); }
+
+/* Decorative grid/dot textures intentionally disabled — flat editorial surfaces. */
+.bg-dotgrid, .bg-blueprint { background-image: none; }
+.grain::after { content: none; }
+
+/* ------------------------------------------------------------- reading prose */
+.prose-ddia {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1.0625rem;
+  line-height: 1.82;
+  color: color-mix(in oklab, var(--color-fg) 88%, transparent);
+  max-width: 62ch;
+}
+.prose-ddia p { margin-bottom: 1.1em; }
+.prose-ddia strong { color: var(--color-fg); font-weight: 600; }
+.prose-ddia em {
+  font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.12em; color: var(--accent);
+}
+.prose-ddia code {
+  font-family: var(--font-code); font-size: 0.85em; padding: 0.1em 0.4em; border-radius: 5px;
+  background: color-mix(in oklab, var(--accent) 12%, var(--color-ink-800)); color: color-mix(in oklab, var(--accent) 55%, var(--color-fg));
+}
+.prose-ddia a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.prose-ddia ul { margin: 0 0 1.1em; padding-left: 1.1em; }
+.prose-ddia li { margin-bottom: 0.45em; }
+.prose-ddia li::marker { color: var(--accent); }
+
+/* ------------------------------------------------------------------- motion */
+@keyframes pulse-glow { 0%,100%{opacity:.45} 50%{opacity:1} }
+@keyframes float-soft { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+@keyframes fade-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+@keyframes dash-flow { to { stroke-dashoffset: -1000; } }
+.anim-pulse-glow { animation: pulse-glow 2.6s ease-in-out infinite; }
+.anim-float { animation: float-soft 6s ease-in-out infinite; }
+.anim-fade-up { animation: fade-up .7s cubic-bezier(.22,1,.36,1) both; }
+.flow-line { stroke-dasharray: 6 8; animation: dash-flow 22s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
